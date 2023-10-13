@@ -24,7 +24,7 @@ const config = {
             try {
                  await connectToDB();
                  //checking if a user already exist and if not create a new user
-                 console.log("user exist1");
+                 console.log("Signing in");
                 const userExist = await User.findOne({email:profile.email});
                 console.log("user exist2");
                 if(!userExist){
@@ -35,10 +35,11 @@ const config = {
                         image:profile.picture
                     })
                 }
-                console.log("user exist4");
-                } catch (error) {
+            } catch (error) {
                 console.log(error);
             }
+            console.log("signed in");
+            return true;
         }
     }
    

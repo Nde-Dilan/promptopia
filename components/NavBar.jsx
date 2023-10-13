@@ -8,7 +8,7 @@ import { signIn, signOut, getProviders, useSession } from "next-auth/react";
 
 const NavBar = () => {
   const { data:session } = useSession();
-  console.log(session);
+  // console.log(session);
   const [providers, setProviders] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
   //To use the next-auth authentication
@@ -30,7 +30,7 @@ const NavBar = () => {
           src="/assets/images/logo.svg"
         />
         {/* {alert(providers)} */}
-        <p className="log_text">Promptopia</p>
+        <p className="logo_text">Promptopia</p>
       </Link>
       {/* {Desktop Navigation} */}
       <div className="sm:flex hidden">

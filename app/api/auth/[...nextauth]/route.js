@@ -24,11 +24,8 @@ const config = {
             try {
                  await connectToDB();
                  //checking if a user already exist and if not create a new user
-                 console.log("Signing in");
                 const userExist = await User.findOne({email:profile.email});
-                console.log("user exist2");
                 if(!userExist){
-                    console.log("user exist3");
                     await User.create({
                         email:profile.email,
                         username:profile.name.replace(" ","").toLowerCase(),
@@ -38,7 +35,6 @@ const config = {
             } catch (error) {
                 console.log(error);
             }
-            console.log("signed in");
             return true;
         }
     }

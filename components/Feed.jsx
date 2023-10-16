@@ -21,23 +21,54 @@ const PromptCardList = ({data,handleTagClick})=>{
 };
 
 const Feed = () => {
-  const [searchText, setSearchText] = useState("");
   const [prompts, setPrompts] = useState([]);
-  const handleSearchChange = (e)=>{
 
+
+  const [searchText, setSearchText] = useState("");
+  const [searchTimeOut,setSearchTimeOut] = useState(null)
+  const [searchResults, setSearchResults] = useState([]);
+
+
+  const handleSearchChange = (e)=>{
+    clearTimeout(searchTimeOut);
+    
+    setSearchText(e.target.value);
+    //un petit delai pour eviter de refaire la recherche à chaque frappe du clavier(debouncing technic)
+    setSearchTimeOut(()=>{
+      setSearchResults(filterPrompts(e.target.value));
+    },500)
+    
+    
+  }
+
+  const filterPrompts = (searchText)=>{
+    const reg = new RegExp(searchText,"i");
+    return prompts.filter(
+      (prompt)=> reg.test(prompt.prompt) ||
+       reg.test(prompt.tag) ||
+      reg.test(prompt.creator.username))
+  }
+  
+  const fetchPrompt = async ()=>{
+    const response = await fetch('/api/prompt');
+
+    const data = await response.json();
+    setPrompts(data);
   }
   useEffect(()=>{
-      const fetchPrompt = async ()=>{
-        const response = await fetch('/api/prompt');
-
-        const data = await response.json();
-        setPrompts(data);
-      }
       fetchPrompt();
   },[])
+
+
+  const handleTagClick =(tagName)=>{
+    console.log(tagName);
+    setSearchText(tagName);
+    console.log(searchText);
+    setSearchResults(filterPrompts(tagName))
+  }
   return (
     <section className="feed">
-      <form  className="relative flex-center w-full">
+      <form onSubmit={handleSearchChange}  className="relative flex-center w-full">
 
     <input
     placeholder='Search for a tag or username...'
@@ -49,7 +80,10 @@ const Feed = () => {
       </form>
       
 
-    <PromptCardList data={prompts} handleTagClick={()=>{}} />
+    {searchText ? (
+    <PromptCardList data={searchResults} handleTagClick={handleTagClick} />) : (
+      <PromptCardList data={prompts} handleTagClick={handleTagClick} />
+    )}
 
 
     </section>

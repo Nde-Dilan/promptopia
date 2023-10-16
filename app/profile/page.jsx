@@ -8,13 +8,29 @@ import Profile from '@components/Profile'
 
 const MyProfile = () => {
     const {data:session } =useSession();
-    const handleEdit = ()=>{
-      
-    }
-    const handleDelete = async ()=>{
+    const router = useRouter();
 
-    }
     const [prompts, setPrompts] = useState([]);
+
+    const handleEdit = (prompt)=>{
+      router.push(`/update-prompt?id=${prompt._id}`);
+    }
+    const handleDelete = async (post)=>{
+      const hasConfirmed = confirm("Are you sure you want to delete this prompt?");
+
+      if(hasConfirmed){
+        try {
+          await fetch(`/api/prompt/${post._id.toSting()}`,{
+            method:'DELETE',
+          });
+          const filteredPosts = prompts.filter((p)=> p._id !== post._id);
+
+          setPrompts(filteredPosts);
+        } catch (error) {
+          console.log('error while trying to delete', error);
+        }
+      }
+    }
 
     useEffect(()=>{
         const fetchPrompt = async ()=>{

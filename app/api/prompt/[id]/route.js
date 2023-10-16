@@ -32,7 +32,6 @@ export const PATCH = async (request, {params})=>{
         if (!updatedPrompt) {
             return new Response("Prompt not found when trying to update", { status: 404 });
         }
-       
         return new Response(JSON.stringify(updatedPrompt),{status:200});
     } catch (error) {
         return new Response("Action failled when trying to update",{status:500});

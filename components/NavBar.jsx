@@ -45,6 +45,7 @@ const NavBar = () => {
             <Link href="/profile">
               <Image
                 src={session?.user?.image}
+                alt="user profile"
                 width="37"
                 height="37"
                 className="rounded-full"
@@ -73,6 +74,7 @@ const NavBar = () => {
           <div className="flex">
             <Image
               src={session?.user?.image}
+              alt="user profile"
               width="37"
               height="37"
               className="rounded-full"
@@ -106,7 +108,7 @@ const NavBar = () => {
                   onClick={() => signIn(provider.id)}
                   className="black_btn"
                 >
-                  Sign In
+                  Sign In with {provider.name}
                 </button>
               ))}
           </>
